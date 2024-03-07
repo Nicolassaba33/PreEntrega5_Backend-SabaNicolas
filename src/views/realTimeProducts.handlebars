@@ -15,14 +15,10 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io(); const form = document.getElementById('productForm');
-  const productList = document.getElementById('productList');
-  form.addEventListener('submit', async (event) => { event.preventDefault();
-  const formData = new FormData(form); const title = formData.get('title');
-  const description = formData.get('description'); await fetch('/api/products',
-  { method: 'POST', headers: { 'Content-Type': 'application/json' }, body:
-  JSON.stringify({ title, description }) }); form.reset(); });
-  socket.on('productAdded', (products) => { productList.innerHTML = '';
+  const socket = io(); socket.emit('joinRoom', 'realTimeProducts'); WebSocket
+  socket.on('connect', () => { console.log('Connected to WebSocket'); });
+  socket.on('productAdded', (products) => { const productList =
+  document.getElementById('productList'); productList.innerHTML = '';
   products.forEach(product => { const li = document.createElement('li');
   li.textContent = product.title; productList.appendChild(li); }); });
 </script>
